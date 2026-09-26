@@ -1,0 +1,3 @@
+{"_type": "sourceReference", "_id": "ref.owasp-top10-2025", "title": "OWASP Top 10:2025", "url": "https://top10.owasp.org/2025/", "publisher": "OWASP", "type": "OWASP", "summary": "Current OWASP Top 10 awareness document for web application security."}
+{"_type": "sourceReference", "_id": "ref.cwe", "title": "Common Weakness Enumeration", "url": "https://cwe.mitre.org/", "publisher": "MITRE", "type": "CWE", "summary": "Community-developed taxonomy of software and hardware weaknesses."}
+{"_type": "sourceReference", "_id": "ref.mitre-attack", "title": "MITRE ATT&CK", "url": "https://attack.mitre.org/", "publisher": "MITRE", "type": "MITRE", "summary": "Knowledge base of adversary tactics and techniques based on real-world observations."}
