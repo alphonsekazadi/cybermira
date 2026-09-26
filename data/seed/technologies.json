@@ -1,0 +1,57 @@
+[
+  {
+    "_id": "technology.api",
+    "_type": "technology",
+    "name": "REST API",
+    "slug": {
+      "_type": "slug",
+      "current": "api"
+    },
+    "description": "HTTP-based application programming interfaces commonly exposing resources through REST endpoints.",
+    "category": "API"
+  },
+  {
+    "_id": "technology.react",
+    "_type": "technology",
+    "name": "React",
+    "slug": {
+      "_type": "slug",
+      "current": "react"
+    },
+    "description": "JavaScript library commonly used to build web application interfaces.",
+    "category": "Frontend"
+  },
+  {
+    "_id": "technology.fastapi",
+    "_type": "technology",
+    "name": "FastAPI",
+    "slug": {
+      "_type": "slug",
+      "current": "fastapi"
+    },
+    "description": "Python framework for building APIs.",
+    "category": "Backend"
+  },
+  {
+    "_id": "technology.django",
+    "_type": "technology",
+    "name": "Django",
+    "slug": {
+      "_type": "slug",
+      "current": "django"
+    },
+    "description": "Python web framework providing routing, authentication, ORM, and other application features.",
+    "category": "Backend"
+  },
+  {
+    "_id": "technology.postgresql",
+    "_type": "technology",
+    "name": "PostgreSQL",
+    "slug": {
+      "_type": "slug",
+      "current": "postgresql"
+    },
+    "description": "Relational database system commonly used by web applications.",
+    "category": "Database"
+  }
+]
