@@ -1,3 +1,4 @@
+![cybermira](cybermira.png)
 # CyberMira
 
 > AI-powered cybersecurity knowledge for developers.
