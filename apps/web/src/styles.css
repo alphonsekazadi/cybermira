@@ -14,12 +14,14 @@
 
 html {
   background: #070a0f;
+  scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  background: #070a0f;
 }
 
 button,
@@ -38,9 +40,12 @@ button:disabled {
 .app-shell {
   position: relative;
   min-height: 100vh;
-  overflow: hidden;
   background:
-    radial-gradient(circle at 50% -15%, rgba(56, 189, 248, 0.09), transparent 34%),
+    radial-gradient(
+      circle at 50% -15%,
+      rgba(56, 189, 248, 0.09),
+      transparent 34%
+    ),
     #070a0f;
 }
 
@@ -80,10 +85,10 @@ button:disabled {
 
 .topbar {
   position: relative;
-  z-index: 2;
+  z-index: 10;
   width: min(1180px, calc(100% - 40px));
-  margin: 0 auto;
   height: 82px;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -210,7 +215,9 @@ button:disabled {
   box-shadow:
     0 20px 70px rgba(0, 0, 0, 0.22),
     inset 0 1px 0 rgba(255, 255, 255, 0.025);
-  transition: border-color 160ms ease, box-shadow 160ms ease;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
 }
 
 .composer:focus-within {
@@ -256,7 +263,10 @@ button:disabled {
   border-radius: 11px;
   background: #e2e8f0;
   color: #0f172a;
-  transition: transform 150ms ease, background 150ms ease, opacity 150ms ease;
+  transition:
+    transform 150ms ease,
+    background 150ms ease,
+    opacity 150ms ease;
 }
 
 .send-button:hover:not(:disabled) {
@@ -332,8 +342,9 @@ button:disabled {
   position: relative;
   z-index: 2;
   width: min(1180px, calc(100% - 40px));
-  height: 48px;
+  min-height: 48px;
   margin: 0 auto;
+  padding: 12px 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -350,6 +361,8 @@ button:disabled {
 .footer-separator {
   color: #1e293b;
 }
+
+/* Conversation */
 
 .conversation-mode {
   align-items: stretch;
@@ -392,15 +405,20 @@ button:disabled {
   background: rgba(15, 23, 42, 0.6);
   color: #94a3b8;
   font-size: 11px;
+  transition:
+    border-color 160ms ease,
+    color 160ms ease,
+    background 160ms ease;
 }
 
 .new-chat-button:hover {
   border-color: rgba(94, 234, 212, 0.22);
   color: #cbd5e1;
+  background: rgba(20, 184, 166, 0.05);
 }
 
 .messages {
-  flex: 1;
+  width: 100%;
 }
 
 .message-row {
@@ -607,7 +625,8 @@ button:disabled {
 .conversation-composer {
   position: sticky;
   bottom: 18px;
-  margin-top: 12px;
+  z-index: 5;
+  margin-top: 20px;
   backdrop-filter: blur(18px);
 }
 
@@ -684,6 +703,10 @@ button:disabled {
 
   .message-row.user .message-content {
     max-width: 90%;
+  }
+
+  .conversation-composer {
+    bottom: 10px;
   }
 
   .footer {
