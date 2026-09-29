@@ -1,2 +1,7 @@
 apps/api/.env
 apps/api/.venv
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo

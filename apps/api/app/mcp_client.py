@@ -2,8 +2,6 @@ import os
 
 import httpx
 from dotenv import load_dotenv
-from mcp import ClientSession
-from mcp.client.streamable_http import streamable_http_client
 
 load_dotenv()
 
@@ -11,41 +9,47 @@ MCP_URL = os.environ["SANITY_CONTEXT_MCP_URL"]
 SANITY_TOKEN = os.environ["SANITY_ORGANIZATION_TOKEN"]
 KNOWLEDGE_BASE_ID = os.environ["SANITY_KNOWLEDGE_BASE_ID"]
 
+MCP_PROTOCOL_VERSION = "2025-06-18"
 
-async def call_mcp_tool(name: str, arguments: dict):
+
+async def call_mcp_tool(
+    name: str,
+    arguments: dict,
+):
     headers = {
         "Authorization": f"Bearer {SANITY_TOKEN}",
+        "Content-Type": "application/json",
         "Accept": "application/json, text/event-stream",
+        "MCP-Protocol-Version": MCP_PROTOCOL_VERSION,
     }
 
-    timeout = httpx.Timeout(
-        connect=30,
-        read=300,
-        write=30,
-        pool=30,
-    )
+    payload = {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "tools/call",
+        "params": {
+            "name": name,
+            "arguments": arguments,
+        },
+    }
 
-    async with httpx.AsyncClient(
-        headers=headers,
-        timeout=timeout,
-    ) as http_client:
-
-        async with streamable_http_client(
+    async with httpx.AsyncClient(timeout=30.0) as client:
+        response = await client.post(
             MCP_URL,
-            http_client=http_client,
-        ) as (read_stream, write_stream):
+            headers=headers,
+            json=payload,
+        )
 
-            async with ClientSession(
-                read_stream,
-                write_stream,
-            ) as session:
+    response.raise_for_status()
 
-                await session.initialize()
+    data = response.json()
 
-                return await session.call_tool(
-                    name,
-                    arguments,
-                )
+    if "error" in data:
+        raise RuntimeError(
+            f"MCP error: {data['error']}"
+        )
+
+    return data["result"]
 
 
 async def get_initial_context():
@@ -68,8 +72,8 @@ async def read_knowledge(paths: list[str]):
 def extract_text(result) -> str:
     parts = []
 
-    for item in result.content:
-        if hasattr(item, "text"):
-            parts.append(item.text)
+    for item in result.get("content", []):
+        if item.get("type") == "text":
+            parts.append(item.get("text", ""))
 
     return "\n\n".join(parts)

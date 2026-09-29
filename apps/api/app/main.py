@@ -1,17 +1,19 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 
+from app.llm import generate_answer
 from app.mcp_client import (
     extract_text,
     get_initial_context,
     read_knowledge,
 )
+from app.retrieval import select_paths
 
 
 app = FastAPI(
     title="CyberMira API",
     description="AI-powered cybersecurity knowledge for developers.",
-    version="0.1.0",
+    version="0.2.0",
 )
 
 
@@ -21,7 +23,8 @@ class ChatRequest(BaseModel):
 
 class ChatResponse(BaseModel):
     message: str
-    knowledge: str
+    answer: str
+    knowledge_paths: list[str]
 
 
 @app.get("/health")
@@ -52,29 +55,29 @@ async def mcp_context():
 @app.post("/api/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest):
     try:
-        result = await read_knowledge(
-            [
-                "access_control",
-                "attack_patterns",
-                "authentication/hardening_and_detection",
-                "authentication/vulnerabilities",
-                "detection",
-                "frameworks",
-                "injection",
-                "mitigation",
-                "owasp_top_10",
-            ]
-        )
+        paths = select_paths(request.message)
+
+        result = await read_knowledge(paths)
 
         knowledge = extract_text(result)
 
+        answer = generate_answer(
+            question=request.message,
+            evidence=knowledge,
+        )
+
         return ChatResponse(
             message=request.message,
-            knowledge=knowledge,
+            answer=answer,
+            knowledge_paths=paths,
         )
 
     except Exception as exc:
+        import traceback
+
+        traceback.print_exc()
+
         raise HTTPException(
             status_code=502,
-            detail=f"Sanity MCP error: {exc}",
+            detail=f"CyberMira error: {type(exc).__name__}: {exc}",
         )
